@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.jk.dao.FoodDao" >
+  
+    <select id="getFood" resultType="com.jk.model.Food"  >
+   		SELECT t1.* FROM t_food t1
+
+
+	</select>
+  
+  <select id="getFoodSize" resultType="com.jk.model.Food" parameterType="com.jk.model.Food">
+   		SELECT t1.* FROM t_food t1
+
+		limit #{offset},#{limit}
+   </select>
+
+    <select id="queryFood" resultType="com.jk.model.Food"  >
+   		SELECT t1.* FROM t_food t1
+
+	</select>
+   <!-- 批量新增  -->
+  <insert id="addsFood" parameterType="java.util.List">
+		insert into t_food(foodname,foodtype,foodprice,foodcontent,fooddate)
+		values
+		<foreach collection="listFood" item="foo"  separator=",">
+			(#{foo.foodname},#{foo.foodtype},#{foo.foodprice},#{foo.foodcontent},#{foo.fooddate})
+		</foreach>
+   </insert>
+   
+   <!--  回显获取ID -->
+   <select id="getfoodById" parameterType="Integer" resultType="com.jk.model.Food">
+   		select t1.* from t_food t1
+   		WHERE t1.foodid = #{foodid}
+   </select>
+
+	<!-- 修改 -->
+	<update id="updateFood" parameterType="com.jk.model.Food">
+   		update t_food
+		set
+			foodname= #{foodname},
+			foodtype= #{foodtype},
+			foodprice=  #{foodprice},
+			foodcontent= #{foodcontent},
+			fooddate=  #{fooddate}
+		  where foodid = #{foodid}
+   </update>
+
+	<!-- 删除  -->
+	<delete id="deleteFood">
+       delete from t_food where foodid in (${ids})
+    </delete>
+     
+</mapper>  
